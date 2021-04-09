@@ -807,25 +807,22 @@ function Session() {
   this.phase = {
     id: `welcome`,
     view: `splash-screen`,
-    phase: false,
   }
   this.nextPhases = [
     {
-      id: `design-order`,
+      id: `order-in-progress`,
       view: `list`,
       otherViews: [],
       // this will fill with the ids of your pizzas
-      arrested: true,
+      isUnfinished: true,
     },
     {
-      id: `review-order`,
+      id: `order-under-review`,
       view: `list`,
-      arrested: false,
     },
     {
-      id: `job-done`,
+      id: `order-complete`,
       view: `splash-screen`,
-      arrested: false,
     },
   ]
 }

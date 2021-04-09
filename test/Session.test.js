@@ -10,25 +10,22 @@ test(`Set up a Session with an empty order, no coupon, and a subzero idTicker.`,
     phase: {
       id: `welcome`,
       view: `splash-screen`,
-      phase: false,
     },
     nextPhases: [
       {
-        id: `design-order`,
+        id: `order-in-progress`,
         view: `list`,
         otherViews: [],
         // this will fill with the ids of your pizzas
-        arrested: true,
+        isUnfinished: true,
       },
       {
-        id: `review-order`,
+        id: `order-under-review`,
         view: `list`,
-        arrested: false,
       },
       {
-        id: `job-done`,
+        id: `order-complete`,
         view: `splash-screen`,
-        arrested: false,
       },
     ],
   }
