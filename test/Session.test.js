@@ -2,9 +2,8 @@
 
 import { Session } from '../src/js/core'
 
-const sampleSession = new Session()
-
 test(`Construct a Session with an empty order, no coupon, and a subzero idTicker.`, () => {
+  const sampleSession = new Session()
   const expected = {
     order: [],
     idTicker: -1,
@@ -34,7 +33,8 @@ test(`Construct a Session with an empty order, no coupon, and a subzero idTicker
 })
 
 test(`Pass into next phase of session.`, () => {
-  sampleSession.passPhase()
+  const sampleSession = new Session()
+  const output = sampleSession.passPhase()
   const expected = {
     order: [],
     idTicker: -1,
@@ -60,12 +60,14 @@ test(`Pass into next phase of session.`, () => {
       },
     ],
   }
+  expect(output).toBe(true)
   expect(sampleSession).toEqual(expected)
 })
 
 test(`Session won't pass unfinished phase.`, () => {
-  sampleSession.passPhase()
-  sampleSession.passPhase() // let's try to go two phases forward
+  const sampleSession = new Session()
+  const output1 = sampleSession.passPhase()
+  const output2 = sampleSession.passPhase() // let's try to go two phases forward
   const expected = {
     order: [],
     idTicker: -1,
@@ -90,5 +92,7 @@ test(`Session won't pass unfinished phase.`, () => {
       },
     ],
   }
+  expect(output1).toBe(true)
+  expect(output2).toBe(false)
   expect(sampleSession).toEqual(expected)
 })
