@@ -50,6 +50,19 @@ Session.prototype.addToOrder = function (pizza) {
   return true
 }
 
+Session.prototype.removeFromOrder = function (itemId) {
+  const inWrongPhase = this.phase.id !== `order-in-progress`
+  if(inWrongPhase) return false
+  const idxOfRemoval = this.order.findIndex(item => item.id === itemId)
+  const didFind = idxOfRemoval !== -1
+  if(didFind) {
+    this.order.splice(idxOfRemoval, 1)
+    const orderNowEmpty = this.order.length === 0
+    if(orderNowEmpty) this.phase.isUnfinished = true
+  }
+  return didFind
+}
+
 Session.prototype.changeView = function (viewId) {
   const isCurrentView = this.phase.view === viewId
   if(isCurrentView) return
