@@ -790,17 +790,54 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/core.js":
-/*!************************!*\
-  !*** ./src/js/core.js ***!
-  \************************/
+/***/ "./src/js/core/Pizza.js":
+/*!******************************!*\
+  !*** ./src/js/core/Pizza.js ***!
+  \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Session": () => (/* binding */ Session),
-/* harmony export */   "Pizza": () => (/* binding */ Pizza)
+/* harmony export */   "default": () => (/* binding */ Pizza)
 /* harmony export */ });
+/* eslint func-names: 0 */
+
+function Pizza() {
+  this.id = -1
+  // id -1 is a signal that this pizza
+  // has not been added to an order
+  this.name = `The Classic`
+  this.summary = `Regular crust, tomato sauce, and mozzerella.`
+  this.price = 20
+  this.chosen = {
+    size: 1,
+    crustIdx: 1,
+    sauceIdx: 0,
+    toppings: [`Mozzerella`],
+  }
+  this.options = {
+    sizes: [`S`, `M`, `L`],
+    crusts: [`regular`, `thin`, `thick`],
+    sauces: 0,
+    toppings: [],
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/js/core/Session.js":
+/*!********************************!*\
+  !*** ./src/js/core/Session.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Session)
+/* harmony export */ });
+/* eslint func-names: 0 */
+
 function Session() {
   this.order = []
   this.idTicker = -1
@@ -827,26 +864,63 @@ function Session() {
   ]
 }
 
-function Pizza() {
-  this.id = -1
-  // id -1 is a signal that this pizza
-  // has not been added to an order
-  this.name = `The Classic`
-  this.summary = `Regular crust, tomato sauce, and mozzerella.`
-  this.price = 20
-  this.chosen = {
-    size: 1,
-    crustIdx: 1,
-    sauceIdx: 0,
-    toppings: [`Mozzerella`],
+Session.prototype.passPhase = function () {
+  const jobDone = !this.phase.isUnfinished
+  if(jobDone) {
+    this.nextPhases.push(this.phase)
+    this.phase = this.nextPhases.shift()
   }
-  this.options = {
-    sizes: [`S`, `M`, `L`],
-    crusts: [`regular`, `thin`, `thick`],
-    sauces: 0,
-    toppings: [],
-  }
+  return jobDone
 }
+
+Session.prototype.addToOrder = function (pizza) {
+  const inWrongPhase = this.phase.id !== `order-in-progress`
+  if(inWrongPhase) return false
+  // throw new Error(`It's not time to add to your order.`)
+  const thatsNoPizza = pizza?.constructor?.name !== `Pizza`
+  if(thatsNoPizza) return false
+  // throw new Error(`Sir, this is a pizza restaurant.`)
+  this.idTicker += 1
+  pizza.id = this.idTicker
+  this.order.push(pizza)
+  this.phase.otherViews.push(pizza.id)
+  this.phase.isUnfinished = false
+  return true
+}
+
+Session.prototype.changeView = function (viewId) {
+  const isCurrentView = this.phase.view === viewId
+  if(isCurrentView) return
+  const didFindOtherView = this.phase.otherViews?.includes(viewId) || false
+  if(didFindOtherView) {
+    this.phase.otherViews.unshift(this.phase.view)
+    const idxOfNewView = this.phase.otherViews.indexOf(viewId)
+    this.phase.otherViews.splice(idxOfNewView, 1)
+    this.phase.view = viewId
+  }
+  return didFindOtherView
+}
+
+
+/***/ }),
+
+/***/ "./src/js/core/index.js":
+/*!******************************!*\
+  !*** ./src/js/core/index.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Session": () => (/* reexport safe */ _Session__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "Pizza": () => (/* reexport safe */ _Pizza__WEBPACK_IMPORTED_MODULE_1__.default)
+/* harmony export */ });
+/* harmony import */ var _Session__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Session */ "./src/js/core/Session.js");
+/* harmony import */ var _Pizza__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pizza */ "./src/js/core/Pizza.js");
+/* eslint func-names: 0 */
+
+
+
 
 
 
@@ -930,12 +1004,23 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_core_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/core.scss */ "./src/styles/core.scss");
 /* harmony import */ var _styles_font_face_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/font-face.scss */ "./src/styles/font-face.scss");
-/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core */ "./src/js/core.js");
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core */ "./src/js/core/index.js");
 // STYLE
 
 
 // LOGIC
 
+
+const mySession = new _core__WEBPACK_IMPORTED_MODULE_2__.Session()
+const myPizza = new _core__WEBPACK_IMPORTED_MODULE_2__.Pizza()
+
+console.log(mySession)
+console.log(`pass phase:`, mySession.passPhase())
+console.log(`new phase`, mySession.phase.id)
+console.log(`add to order:`, mySession.addToOrder(myPizza))
+console.log(`new order item`, mySession.order[mySession.order.length - 1])
+console.log(`change view:`, mySession.changeView(0))
+console.log(`new view`, mySession.phase.view)
 
 })();
 
