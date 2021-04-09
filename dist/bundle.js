@@ -798,8 +798,15 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Session": () => (/* binding */ Session),
 /* harmony export */   "Pizza": () => (/* binding */ Pizza)
 /* harmony export */ });
+function Session() {
+  this.order = []
+  this.coupon = null
+  this.idTicker = -1
+}
+
 function Pizza() {
   this.toppings = []
   this.size = `M`
