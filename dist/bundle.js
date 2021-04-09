@@ -798,9 +798,15 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "Pizza": () => (/* binding */ Pizza)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (number => number * 2);
+function Pizza() {
+  this.toppings = []
+  this.size = `M`
+  this.id = -1
+}
+
+
 
 
 /***/ })
