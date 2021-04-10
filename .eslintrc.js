@@ -69,7 +69,7 @@ module.exports = {
     'object-curly-newline': [`error`, {
       consistent: true,
     }],
-    'operator-linebreak': [`error`, `before`],
+    'operator-linebreak': `off`,
     'prefer-destructuring': [`error`,
       {
         VariableDeclarator: {
