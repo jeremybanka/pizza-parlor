@@ -1,5 +1,7 @@
 /* eslint func-names: 0 */
 
+import Pizza from './Pizza'
+
 export default function Session() {
   this.order = []
   this.idTicker = -1
@@ -48,6 +50,11 @@ Session.prototype.addToOrder = function (pizza) {
   this.phase.otherViews.push(pizza.id)
   this.phase.isUnfinished = false
   return true
+}
+
+Session.prototype.addPizza = function () {
+  const pizza = new Pizza()
+  return this.addToOrder(pizza)
 }
 
 Session.prototype.removeFromOrder = function (itemId) {

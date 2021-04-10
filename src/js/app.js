@@ -17,4 +17,7 @@ console.log(`other views:`, mySession.phase.otherViews)
 console.log(`change view:`, mySession.changeView(`list`))
 console.log(`new view:`, mySession.phase.view)
 console.log(`other views:`, mySession.phase.otherViews)
-console.log(`remove pizza:`, mySession.removeFromOrder(0))
+console.log(mySession.order[0].processChange())
+console.log(mySession.order[0].removeTopping(`Mozzarella`))
+
+// console.log(`remove pizza:`, mySession.removeFromOrder(0))
