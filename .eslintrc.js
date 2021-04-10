@@ -35,7 +35,7 @@ module.exports = {
     }],
     'max-classes-per-file': `off`,
     'max-len': [`error`, {
-      code: 80,
+      code: 81,
       ignoreRegExpLiterals: true,
     }],
     'no-confusing-arrow': `off`,
