@@ -11,15 +11,24 @@ test(`Create an 'empty' medium Pizza with a placeholder id and no toppings.`, ()
     price: 20,
     chosen: {
       size: 1,
-      crustIdx: 1,
-      sauceIdx: 0,
-      toppings: [`Mozzerella`],
+      crust: 0,
+      sauce: 0,
+      toppings: [`Mozzarella`],
     },
     options: {
-      sizes: [`S`, `M`, `L`],
-      crusts: [`regular`, `thin`, `thick`],
-      sauces: 0,
-      toppings: [],
+      size: [`S`, `M`, `L`],
+      crust: [`Regular`, `Thin Crust`, `Deep Dish`],
+      sauce: [`Tomato`, `Pesto`, `Alfredo`],
+      toppings: [
+        `Olive`,
+        `Onion`,
+        `Pepperoni`,
+        `Pineapple`,
+        `Sausage`,
+        `Spinach`,
+        `Razor Blades`,
+        `Yak`,
+      ],
     },
   }
   expect(input).toEqual(expected)
