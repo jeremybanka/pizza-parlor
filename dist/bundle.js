@@ -888,6 +888,21 @@ Session.prototype.addToOrder = function (pizza) {
   return true
 }
 
+Session.prototype.removeFromOrder = function (itemId) {
+  const inWrongPhase = this.phase.id !== `order-in-progress`
+  if(inWrongPhase) return false
+  const idxOfRemoval = this.order.findIndex(item => item.id === itemId)
+  const didFind = idxOfRemoval !== -1
+  if(didFind) {
+    this.order.splice(idxOfRemoval, 1)
+    this.changeView(`list`)
+    this.removeView(itemId)
+    const orderNowEmpty = this.order.length === 0
+    if(orderNowEmpty) this.phase.isUnfinished = true
+  }
+  return didFind
+}
+
 Session.prototype.changeView = function (viewId) {
   const isCurrentView = this.phase.view === viewId
   if(isCurrentView) return
@@ -899,6 +914,14 @@ Session.prototype.changeView = function (viewId) {
     this.phase.view = viewId
   }
   return didFindOtherView
+}
+
+Session.prototype.removeView = function (viewId) {
+  if(!this.phase.otherViews) return false
+  const idxOfRemoval = this.phase.otherViews.indexOf(viewId)
+  const didFind = idxOfRemoval !== -1
+  if(didFind) this.phase.otherViews.splice(idxOfRemoval, 1)
+  return didFind
 }
 
 
@@ -921,6 +944,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+_Session__WEBPACK_IMPORTED_MODULE_0__.default.prototype.addPizza = function () {
+  const pizza = new _Pizza__WEBPACK_IMPORTED_MODULE_1__.default()
+  return this.addToOrder(pizza)
+}
 
 
 
@@ -1012,15 +1040,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const mySession = new _core__WEBPACK_IMPORTED_MODULE_2__.Session()
-const myPizza = new _core__WEBPACK_IMPORTED_MODULE_2__.Pizza()
 
 console.log(mySession)
 console.log(`pass phase:`, mySession.passPhase())
-console.log(`new phase`, mySession.phase.id)
-console.log(`add to order:`, mySession.addToOrder(myPizza))
-console.log(`new order item`, mySession.order[mySession.order.length - 1])
+console.log(`new phase:`, mySession.phase.id)
+console.log(`add pizza:`, mySession.addPizza())
+console.log(`new order item:`, mySession.order[mySession.order.length - 1])
 console.log(`change view:`, mySession.changeView(0))
-console.log(`new view`, mySession.phase.view)
+console.log(`new view:`, mySession.phase.view)
+console.log(`other views:`, mySession.phase.otherViews)
+console.log(`change view:`, mySession.changeView(`list`))
+console.log(`new view:`, mySession.phase.view)
+console.log(`other views:`, mySession.phase.otherViews)
+console.log(`remove pizza:`, mySession.removeFromOrder(0))
 
 })();
 

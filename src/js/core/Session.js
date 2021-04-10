@@ -57,6 +57,8 @@ Session.prototype.removeFromOrder = function (itemId) {
   const didFind = idxOfRemoval !== -1
   if(didFind) {
     this.order.splice(idxOfRemoval, 1)
+    this.changeView(`list`)
+    this.removeView(itemId)
     const orderNowEmpty = this.order.length === 0
     if(orderNowEmpty) this.phase.isUnfinished = true
   }
@@ -74,4 +76,12 @@ Session.prototype.changeView = function (viewId) {
     this.phase.view = viewId
   }
   return didFindOtherView
+}
+
+Session.prototype.removeView = function (viewId) {
+  if(!this.phase.otherViews) return false
+  const idxOfRemoval = this.phase.otherViews.indexOf(viewId)
+  const didFind = idxOfRemoval !== -1
+  if(didFind) this.phase.otherViews.splice(idxOfRemoval, 1)
+  return didFind
 }
