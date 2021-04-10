@@ -40,7 +40,7 @@ test(`Construct a Session with an empty order, no coupon, and a subzero idTicker
 
 test(`Pass into next state of session.`, () => {
   const sampleSession = new Session()
-  const output = sampleSession.goToNextState()
+  sampleSession.goToNextState()
   const expected = {
     order: [],
     idTicker: -1,
@@ -66,14 +66,13 @@ test(`Pass into next state of session.`, () => {
       },
     ],
   }
-  expect(output).toBe(true)
   expect(sampleSession).toEqual(expected)
 })
 
 test(`Session won't pass unfinished state.`, () => {
   const sampleSession = new Session()
-  const output1 = sampleSession.goToNextState()
-  const output2 = sampleSession.goToNextState() // let's try to go two states forward
+  sampleSession.goToNextState()
+  sampleSession.goToNextState() // let's try to go two states forward
   const expectedState =  {
     id: ORDER_IN_PROGRESS,
     view: LIST,
@@ -94,36 +93,31 @@ test(`Session won't pass unfinished state.`, () => {
       view: SPLASH_SCREEN,
     },
   ]
-  expect(output1).toBe(true)
-  expect(output2).toBe(false)
   expect(sampleSession.state).toEqual(expectedState)
   expect(sampleSession.nextStates).toEqual(expectedNextStates)
 })
 
-test(`Session changeView(currentView) returns undefined.`, () => {
+test(`Session changeView(currentView) does nothing.`, () => {
   const sampleSession = new Session()
   const originalView = sampleSession.state.view
-  const output = sampleSession.changeView(originalView)
-  expect(typeof output).toBe(`undefined`)
+  sampleSession.changeView(originalView)
   expect(sampleSession.state.view).toEqual(originalView)
 })
 
-test(`Session changeView(nonExistentView) returns false.`, () => {
+test(`Session changeView(nonExistentView) throws error.`, () => {
   const sampleSession = new Session()
   const originalView = sampleSession.state.view
   const nonExistentView = `this-view-does-not-exist`
-  const output = sampleSession.changeView(nonExistentView)
-  expect(output).toBe(false)
+  expect(() => sampleSession.changeView(nonExistentView)).toThrow(Error)
   expect(sampleSession.state.view).toEqual(originalView)
 })
 
-test(`Session changeView(existentView) puts originalView at otherViews[0], changes view, & returns true.`, () => {
+test(`Session changeView(existentView) puts originalView at otherViews[0], changes view.`, () => {
   const sampleSession = new Session()
   const originalView = sampleSession.state.view
   const exampleView = `example-view`
   sampleSession.state.otherViews = [exampleView]
-  const output = sampleSession.changeView(exampleView)
-  expect(output).toBe(true)
+  sampleSession.changeView(exampleView)
   expect(sampleSession.state.view).toEqual(exampleView)
   expect(sampleSession.state.otherViews[0]).toEqual(originalView)
 })
@@ -132,15 +126,13 @@ test(`Session removeView(otherView) gets rid of that view from otherViews.`, () 
   const sampleSession = new Session()
   const exampleView = `example-view`
   sampleSession.state.otherViews = [exampleView]
-  const output = sampleSession.removeView(exampleView)
-  expect(output).toBe(true)
+  sampleSession.removeView(exampleView)
   expect(sampleSession.state.otherViews).toEqual([])
 })
 
-test(`Session removeView(currentView) always does nothing and returns false.`, () => {
+test(`Session removeView(currentView) always does nothing and returns.`, () => {
   const sampleSession = new Session()
   const currentView = sampleSession.state.view
-  const output = sampleSession.removeView(currentView)
-  expect(output).toBe(false)
+  expect(() => sampleSession.removeView(currentView)).toThrow(Error)
   expect(sampleSession.state.view).toEqual(currentView)
 })

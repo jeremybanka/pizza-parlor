@@ -45,7 +45,7 @@ Pizza.prototype.chooseOption = function (key, idx) {
       break
     default: return false
   }
-  return this.processChange()
+  this.processChange()
 }
 
 Pizza.prototype.addTopping = function (idx) {
@@ -57,20 +57,16 @@ Pizza.prototype.removeTopping = function (idx) {
   const chosenTopping = this.chosen.toppings.splice(idx, 1)
   this.options.toppings.push(chosenTopping)
   this.options.toppings.sort()
-  return this.processChange()
+  this.processChange()
 }
 
 Pizza.prototype.processChange = function () {
   this.size = this.options.size[this.chosen.size]
   this.crust = this.options.crust[this.chosen.crust]
   this.sauce = this.options.sauce[this.chosen.sauce]
-  return (
-    this.tallyPrice()
-    &&
-    this.summarize()
-    &&
-    this.rename()
-  )
+  this.tallyPrice()
+  this.summarize()
+  this.rename()
 }
 
 Pizza.prototype.tallyPrice = function () {
@@ -84,7 +80,6 @@ Pizza.prototype.tallyPrice = function () {
   }
   const pizzaPrice = sizePrice + crustPrice + saucePrice + toppingsPrice
   this.price = pizzaPrice
-  return true
 }
 
 Pizza.prototype.summarize = function () {
@@ -218,7 +213,6 @@ Pizza.prototype.rename = function () {
   })()
   if(specialName) {
     this.name = specialName
-    return true
   }
   const generatedName = (() => {
     switch(`${!!prefix} ${!!core} ${!!suffix}`) {
@@ -230,5 +224,4 @@ Pizza.prototype.rename = function () {
     }
   })()
   this.name = generatedName
-  return true
 }

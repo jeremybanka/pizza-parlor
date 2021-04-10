@@ -10,10 +10,9 @@ test(`Adding a pizza outside the order-in-progress state adds nothing and return
   const sampleSession = new Session()
   const perfectPizza = new Pizza()
   const stateId = sampleSession.state.id
-  const output = sampleSession.addToOrder(perfectPizza)
   const sampleOrder = sampleSession.order
   expect(stateId).toBe(WELCOME)
-  expect(output).toBe(false)
+  expect(() => sampleSession.addToOrder(perfectPizza)).toThrow(Error)
   expect(sampleOrder).toEqual([])
 })
 
@@ -22,22 +21,20 @@ test(`Adding non-Pizza to order returns false.`, () => {
   sampleSession.goToNextState()
   const nonPizza = `im not even a object lol`
   const stateId = sampleSession.state.id
-  const output = sampleSession.addToOrder(nonPizza)
   const sampleOrder = sampleSession.order
+  expect(() => sampleSession.addToOrder(nonPizza)).toThrow(Error)
   expect(stateId).toBe(ORDER_IN_PROGRESS)
-  expect(output).toBe(false)
   expect(sampleOrder).toEqual([])
 })
 
-test(`Adding a pizza during the order-in-progress state adds your pizza and returns true.`, () => {
+test(`Adding a pizza during the order-in-progress state adds your pizza.`, () => {
   const sampleSession = new Session()
   const perfectPizza = new Pizza()
   sampleSession.goToNextState()
   const stateId = sampleSession.state.id
-  const output = sampleSession.addToOrder(perfectPizza)
+  sampleSession.addToOrder(perfectPizza)
   const sampleOrder = sampleSession.order
   expect(stateId).toBe(ORDER_IN_PROGRESS)
-  expect(output).toBe(true)
   expect(sampleOrder).toEqual([perfectPizza])
 })
 
@@ -47,19 +44,17 @@ test(`Session.prototype.addPizza makes a pizza and adds it to the order`, () => 
   perfectPizza.id = 0 // simulate adding our new pizza to the order
   sampleSession.goToNextState()
   const stateId = sampleSession.state.id
-  const addPizzaSuccess = sampleSession.addPizza()
+  sampleSession.addPizza()
   const sampleOrder = sampleSession.order
   expect(stateId).toBe(ORDER_IN_PROGRESS)
-  expect(addPizzaSuccess).toBe(true)
   expect(sampleOrder).toEqual([perfectPizza])
 })
 
-test(`Session.prototype.removeFromOrder(0) removes pizza 0 and returns true.`, () => {
+test(`Session.prototype.removeFromOrder(0) removes pizza 0.`, () => {
   const sampleSession = new Session()
   sampleSession.goToNextState()
   sampleSession.addPizza()
-  const output = sampleSession.removeFromOrder(0)
+  sampleSession.removeFromOrder(0)
   const sampleOrder = sampleSession.order
-  expect(output).toBe(true)
   expect(sampleOrder).toEqual([])
 })

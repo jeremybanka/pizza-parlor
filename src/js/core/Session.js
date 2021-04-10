@@ -45,56 +45,47 @@ Session.prototype.goToNextState = function () {
 
 Session.prototype.addToOrder = function (pizza) {
   const inWrongState = this.state.id !== ORDER_IN_PROGRESS
-  if(inWrongState) return false
-  // throw new Error(`It's not time to add to your order.`)
+  if(inWrongState) throw new Error(`It's not time to add to your order.`)
   const thatsNoPizza = pizza?.constructor?.name !== `Pizza`
-  if(thatsNoPizza) return false
-  // throw new Error(`Sir, this is a pizza restaurant.`)
+  if(thatsNoPizza) throw new Error(`Sir, this is a pizza restaurant.`)
   this.idTicker += 1
   pizza.id = this.idTicker
   this.order.push(pizza)
   this.state.otherViews.push(pizza.id)
   this.state.isUnfinished = false
-  return true
 }
 
 Session.prototype.addPizza = function () {
   const pizza = new Pizza()
-  return this.addToOrder(pizza)
+  this.addToOrder(pizza)
 }
 
 Session.prototype.removeFromOrder = function (itemId) {
   const inWrongState = this.state.id !== ORDER_IN_PROGRESS
-  if(inWrongState) return false
+  if(inWrongState) throw new Error(`It's not time to edit your order.`)
   const idxOfRemoval = this.order.findIndex(item => item.id === itemId)
-  const didFind = idxOfRemoval !== -1
-  if(didFind) {
-    this.order.splice(idxOfRemoval, 1)
-    this.changeView(LIST)
-    this.removeView(itemId)
-    const orderNowEmpty = this.order.length === 0
-    if(orderNowEmpty) this.state.isUnfinished = true
-  }
-  return didFind
+  if(idxOfRemoval === -1) throw new Error(`Couldn't find the item for deletion.`)
+  this.order.splice(idxOfRemoval, 1)
+  this.changeView(LIST)
+  this.removeView(itemId)
+  const orderNowEmpty = this.order.length === 0
+  if(orderNowEmpty) this.state.isUnfinished = true
 }
 
 Session.prototype.changeView = function (viewId) {
   const isCurrentView = this.state.view === viewId
   if(isCurrentView) return
-  const didFindOtherView = this.state.otherViews?.includes(viewId) || false
-  if(didFindOtherView) {
-    this.state.otherViews.unshift(this.state.view)
-    const idxOfNewView = this.state.otherViews.indexOf(viewId)
-    this.state.otherViews.splice(idxOfNewView, 1)
-    this.state.view = viewId
-  }
-  return didFindOtherView
+  const didntFindOtherView = !this.state.otherViews?.includes(viewId)
+  if(didntFindOtherView) throw new Error(`desired view does not exist`)
+  this.state.otherViews.unshift(this.state.view)
+  const idxOfNewView = this.state.otherViews.indexOf(viewId)
+  this.state.otherViews.splice(idxOfNewView, 1)
+  this.state.view = viewId
 }
 
 Session.prototype.removeView = function (viewId) {
-  if(!this.state.otherViews) return false
+  if(!this.state.otherViews) throw new Error(`desired view does not exist`)
   const idxOfRemoval = this.state.otherViews.indexOf(viewId)
-  const didFind = idxOfRemoval !== -1
-  if(didFind) this.state.otherViews.splice(idxOfRemoval, 1)
-  return didFind
+  if(idxOfRemoval === -1) throw new Error(`view for deletion not found`)
+  this.state.otherViews.splice(idxOfRemoval, 1)
 }
