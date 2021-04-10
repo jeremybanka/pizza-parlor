@@ -111,7 +111,7 @@ test(`Session changeView(nonExistentView) returns false.`, () => {
   expect(sampleSession.phase.view).toEqual(originalView)
 })
 
-test(`Session changeView(existentView) puts currentView at otherViews[0], changes view, & returns true.`, () => {
+test(`Session changeView(existentView) puts originalView at otherViews[0], changes view, & returns true.`, () => {
   const sampleSession = new Session()
   const originalView = sampleSession.phase.view
   const exampleView = `example-view`
@@ -120,4 +120,21 @@ test(`Session changeView(existentView) puts currentView at otherViews[0], change
   expect(output).toBe(true)
   expect(sampleSession.phase.view).toEqual(exampleView)
   expect(sampleSession.phase.otherViews[0]).toEqual(originalView)
+})
+
+test(`Session removeView(otherView) gets rid of that view from otherViews.`, () => {
+  const sampleSession = new Session()
+  const exampleView = `example-view`
+  sampleSession.phase.otherViews = [exampleView]
+  const output = sampleSession.removeView(exampleView)
+  expect(output).toBe(true)
+  expect(sampleSession.phase.otherViews).toEqual([])
+})
+
+test(`Session removeView(currentView) always does nothing and returns false.`, () => {
+  const sampleSession = new Session()
+  const currentView = sampleSession.phase.view
+  const output = sampleSession.removeView(currentView)
+  expect(output).toBe(false)
+  expect(sampleSession.phase.view).toEqual(currentView)
 })
