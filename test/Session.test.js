@@ -1,62 +1,68 @@
 /* eslint max-len: 0 */
 
 import { Session } from '../src/js/core'
+import { WELCOME,
+  ORDER_IN_PROGRESS,
+  ORDER_UNDER_REVIEW,
+  ORDER_COMPLETE,
+  SPLASH_SCREEN,
+  LIST } from '../src/js/core/Session'
 
 test(`Construct a Session with an empty order, no coupon, and a subzero idTicker.`, () => {
   const sampleSession = new Session()
   const expected = {
     order: [],
     idTicker: -1,
-    phase: {
-      id: `welcome`,
-      view: `splash-screen`,
+    state: {
+      id: WELCOME,
+      view: SPLASH_SCREEN,
     },
-    nextPhases: [
+    nextStates: [
       {
-        id: `order-in-progress`,
-        view: `list`,
+        id: ORDER_IN_PROGRESS,
+        view: LIST,
         otherViews: [],
         // this will fill with the ids of your pizzas
         isUnfinished: true,
       },
       {
-        id: `order-under-review`,
-        view: `list`,
+        id: ORDER_UNDER_REVIEW,
+        view: LIST,
       },
       {
-        id: `order-complete`,
-        view: `splash-screen`,
+        id: ORDER_COMPLETE,
+        view: SPLASH_SCREEN,
       },
     ],
   }
   expect(sampleSession).toEqual(expected)
 })
 
-test(`Pass into next phase of session.`, () => {
+test(`Pass into next state of session.`, () => {
   const sampleSession = new Session()
-  const output = sampleSession.passPhase()
+  const output = sampleSession.goToNextState()
   const expected = {
     order: [],
     idTicker: -1,
-    phase: {
-      id: `order-in-progress`,
-      view: `list`,
+    state: {
+      id: ORDER_IN_PROGRESS,
+      view: LIST,
       otherViews: [],
-      // we got to this phase, but what happens next?
+      // we got to this state, but what happens next?
       isUnfinished: true,
     },
-    nextPhases: [
+    nextStates: [
       {
-        id: `order-under-review`,
-        view: `list`,
+        id: ORDER_UNDER_REVIEW,
+        view: LIST,
       },
       {
-        id: `order-complete`,
-        view: `splash-screen`,
+        id: ORDER_COMPLETE,
+        view: SPLASH_SCREEN,
       },
       {
-        id: `welcome`,
-        view: `splash-screen`,
+        id: WELCOME,
+        view: SPLASH_SCREEN,
       },
     ],
   }
@@ -64,77 +70,77 @@ test(`Pass into next phase of session.`, () => {
   expect(sampleSession).toEqual(expected)
 })
 
-test(`Session won't pass unfinished phase.`, () => {
+test(`Session won't pass unfinished state.`, () => {
   const sampleSession = new Session()
-  const output1 = sampleSession.passPhase()
-  const output2 = sampleSession.passPhase() // let's try to go two phases forward
-  const expectedPhase =  {
-    id: `order-in-progress`,
-    view: `list`,
+  const output1 = sampleSession.goToNextState()
+  const output2 = sampleSession.goToNextState() // let's try to go two states forward
+  const expectedState =  {
+    id: ORDER_IN_PROGRESS,
+    view: LIST,
     otherViews: [],
     isUnfinished: true, // oops! hold it right there, bud.
   }
-  const expectedNextPhases =  [
+  const expectedNextStates =  [
     {
-      id: `order-under-review`,
-      view: `list`,
+      id: ORDER_UNDER_REVIEW,
+      view: LIST,
     },
     {
-      id: `order-complete`,
-      view: `splash-screen`,
+      id: ORDER_COMPLETE,
+      view: SPLASH_SCREEN,
     },
     {
-      id: `welcome`,
-      view: `splash-screen`,
+      id: WELCOME,
+      view: SPLASH_SCREEN,
     },
   ]
   expect(output1).toBe(true)
   expect(output2).toBe(false)
-  expect(sampleSession.phase).toEqual(expectedPhase)
-  expect(sampleSession.nextPhases).toEqual(expectedNextPhases)
+  expect(sampleSession.state).toEqual(expectedState)
+  expect(sampleSession.nextStates).toEqual(expectedNextStates)
 })
 
 test(`Session changeView(currentView) returns undefined.`, () => {
   const sampleSession = new Session()
-  const originalView = sampleSession.phase.view
+  const originalView = sampleSession.state.view
   const output = sampleSession.changeView(originalView)
   expect(typeof output).toBe(`undefined`)
-  expect(sampleSession.phase.view).toEqual(originalView)
+  expect(sampleSession.state.view).toEqual(originalView)
 })
 
 test(`Session changeView(nonExistentView) returns false.`, () => {
   const sampleSession = new Session()
-  const originalView = sampleSession.phase.view
+  const originalView = sampleSession.state.view
   const nonExistentView = `this-view-does-not-exist`
   const output = sampleSession.changeView(nonExistentView)
   expect(output).toBe(false)
-  expect(sampleSession.phase.view).toEqual(originalView)
+  expect(sampleSession.state.view).toEqual(originalView)
 })
 
 test(`Session changeView(existentView) puts originalView at otherViews[0], changes view, & returns true.`, () => {
   const sampleSession = new Session()
-  const originalView = sampleSession.phase.view
+  const originalView = sampleSession.state.view
   const exampleView = `example-view`
-  sampleSession.phase.otherViews = [exampleView]
+  sampleSession.state.otherViews = [exampleView]
   const output = sampleSession.changeView(exampleView)
   expect(output).toBe(true)
-  expect(sampleSession.phase.view).toEqual(exampleView)
-  expect(sampleSession.phase.otherViews[0]).toEqual(originalView)
+  expect(sampleSession.state.view).toEqual(exampleView)
+  expect(sampleSession.state.otherViews[0]).toEqual(originalView)
 })
 
 test(`Session removeView(otherView) gets rid of that view from otherViews.`, () => {
   const sampleSession = new Session()
   const exampleView = `example-view`
-  sampleSession.phase.otherViews = [exampleView]
+  sampleSession.state.otherViews = [exampleView]
   const output = sampleSession.removeView(exampleView)
   expect(output).toBe(true)
-  expect(sampleSession.phase.otherViews).toEqual([])
+  expect(sampleSession.state.otherViews).toEqual([])
 })
 
 test(`Session removeView(currentView) always does nothing and returns false.`, () => {
   const sampleSession = new Session()
-  const currentView = sampleSession.phase.view
+  const currentView = sampleSession.state.view
   const output = sampleSession.removeView(currentView)
   expect(output).toBe(false)
-  expect(sampleSession.phase.view).toEqual(currentView)
+  expect(sampleSession.state.view).toEqual(currentView)
 })

@@ -2,7 +2,7 @@
 ### Describe: `Session()`
 
 * **Test**\
-  Set up a Session with an empty order, readymade phases, and a subzero idTicker.
+  Set up a Session with an empty order, readymade states, and a subzero idTicker.
 * **Code**
   ```
   const mySession = new Session()
@@ -13,11 +13,11 @@
   Session {
     order: [],
     idTicker: -1,
-    phase: {
+    state: {
       id: 'welcome',
       view: 'splash-screen',
     },
-    nextPhases: [
+    nextStates: [
       {
         id: 'order-in-progress',
         view: 'list',
