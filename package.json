@@ -29,6 +29,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "jquery": "^3.6.0",
     "sass": "^1.32.8"
   }
 }
