@@ -1,7 +1,12 @@
 import extend from '../src/js/core/extensions'
-import { _contains, _matches, _overlaps } from '../src/js/core/extensions/array'
+import {
+  _contains,
+  _matches,
+  _overlaps,
+  _excludes,
+} from '../src/js/core/extensions/array'
 
-extend(Array).with(_contains, _matches, _overlaps)
+extend(Array).with(_contains, _matches, _overlaps, _excludes)
 
 const numbers = [0, 1, 2, 3, 4, 5]
 const importantThings = [`sleep`, `exercise`, `nutrition`, `love`]
@@ -63,5 +68,14 @@ describe(`Array.prototype._overlaps()`, () => {
       `exercise`, `anguish`,
     )
     expect(output).toBe(1)
+  })
+})
+
+describe(`Array.prototype._excludes()`, () => {
+  it(`returns true if the specified items are not in the array`, () => {
+    const output = importantThings._excludes(
+      `torment`, `anguish`,
+    )
+    expect(output).toBe(true)
   })
 })

@@ -32,4 +32,14 @@ const _overlaps = function (...args) {
   return incidences
 }
 
-export { _contains, _matches, _overlaps }
+const _excludes = function (...args) {
+  const maybeArray = args[0]
+  const elements = Array.isArray(maybeArray) ? maybeArray : args
+  let incidences = 0
+  for(const element of elements) {
+    if(this.includes(element)) incidences += 1
+  }
+  return !incidences
+}
+
+export { _contains, _matches, _overlaps, _excludes }

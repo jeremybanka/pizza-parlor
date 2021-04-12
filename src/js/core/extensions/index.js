@@ -2,10 +2,10 @@
 /* eslint no-extend-native: 0 */
 /* eslint no-restricted-syntax: 0 */
 
-const extend = GlobalObject => new Extension(GlobalObject)
+const extend = Prototype => new Extension(Prototype)
 
-function Extension(GlobalObject) {
-  this.scope = GlobalObject
+function Extension(Prototype) {
+  this.scope = Prototype
 }
 
 Extension.prototype.with = function (...methods) {
