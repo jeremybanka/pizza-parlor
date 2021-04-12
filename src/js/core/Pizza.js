@@ -1,5 +1,6 @@
 /* eslint func-names: 0 */
 /* eslint no-case-declarations: 0 */
+/* eslint no-global-assign: 0 */
 
 import PRICE_SHEET from './data/priceSheet'
 
@@ -8,7 +9,7 @@ export default function Pizza() {
   // id -1 is a signal that this pizza
   // has not been added to an order
   this.name = `The Classic`
-  this.summary = `Regular crust, tomato sauce, and mozzerella.`
+  this.summary = `Medium pizza with tomato sauce and mozzarella.`
   this.price = 20
   this.chosen = {
     size: 1,
@@ -18,16 +19,16 @@ export default function Pizza() {
   }
   this.options = {
     size: [`S`, `M`, `L`],
-    crust: [`Regular`, `Thin Crust`, `Deep Dish`],
-    sauce: [`Tomato`, `Pesto`, `Alfredo`],
+    crust: [`Regular`, `Thin Crust`, `Deep Dish`, `None`],
+    sauce: [`Tomato`, `Pesto`, `Alfredo`, `None`],
     toppings: [
       `Olive`,
       `Onion`,
       `Pepperoni`,
       `Pineapple`,
+      `Razor Blades`,
       `Sausage`,
       `Spinach`,
-      `Razor Blades`,
       `Yak`,
     ],
   }
@@ -40,22 +41,22 @@ Pizza.prototype.chooseOption = function (key, idx) {
     case `sauce`:
       this.chosen[key] = idx
       break
-    case `topping`:
+    case `toppings`:
       this.addTopping(idx)
       break
-    default: return false
+    default: throw new Error(`not a valid pizza option: '${key}'`)
   }
   this.processChange()
 }
 
 Pizza.prototype.addTopping = function (idx) {
   const chosenTopping = this.options.toppings.splice(idx, 1)
-  this.chosen.toppings.push(chosenTopping)
+  this.chosen.toppings.push(...chosenTopping)
 }
 
 Pizza.prototype.removeTopping = function (idx) {
   const chosenTopping = this.chosen.toppings.splice(idx, 1)
-  this.options.toppings.push(chosenTopping)
+  this.options.toppings.push(chosenTopping[0])
   this.options.toppings.sort()
   this.processChange()
 }
@@ -80,6 +81,7 @@ Pizza.prototype.tallyPrice = function () {
   }
   const pizzaPrice = sizePrice + crustPrice + saucePrice + toppingsPrice
   this.price = pizzaPrice
+  console.log(this.price)
 }
 
 Pizza.prototype.summarize = function () {
@@ -110,6 +112,7 @@ Pizza.prototype.summarize = function () {
     }
   })()
   let chosenToppings = [...this.chosen.toppings]
+  console.log(chosenToppings)
   chosenToppings = chosenToppings.map(topping => topping.toLowerCase())
   if(listHead) chosenToppings.unshift(listHead)
   const list = (() => {
@@ -124,104 +127,79 @@ Pizza.prototype.summarize = function () {
     }
   })()
   this.summary = `${adjective} ${noun} ${list}.`
-  return !!this.summary
+  console.log(this.summary)
 }
 
 Pizza.prototype.rename = function () {
-  let specialName = ``
-  let core = ``
-  let prefix = ``
-  let suffix = ``
-  switch(this.crust) {
-    case `Regular`:
-      switch(this.sauce) {
-        case `Tomato`: core = `Classic`; break
-        case `Pesto`: core = `Gardener`; break
-        case `Alfredo`: core = `Gourmet`; break
-        case `None`: prefix = `Open-faced`; suffix = `Sandwich`; break
-        default:
-      } break
-    case `Thin Crust`:
-      switch(this.sauce) {
-        case `Tomato`: core = `New Yorker`; break
-        case `Pesto`: core = `Luigi`; break
-        case `Alfredo`: core = `Mafioso`; break
-        case `None`: prefix = `Open-faced`; suffix = `Pita`; break
-        default:
-      } break
-    case `Deep Dish`:
-      switch(this.sauce) {
-        case `Tomato`: core = `Mario`; break
-        case `Pesto`: core = `Shrek`; break
-        case `Alfredo`: core = `Gourmond`; break
-        case `None`: prefix = `Bread Hunk`; break
-        default:
-      } break
-    case `None`:
-      switch(this.sauce) {
-        case `Tomato`: prefix = `Messy`; break
-        case `Pesto`: prefix = `Mossy`; break
-        case `Alfredo`: prefix = `Buttered`; break
-        case `None`: suffix = `Extravaganza`; break
-        default:
-      } break
-
-    default: throw new Error(`strange crust`)
+  const specialName = ``
+  const autoNameCoreDict = {
+    'Regular': {
+      'Tomato': { infix: `Classic` },
+      'Pesto': { infix: `Gardener` },
+      'Alfredo': { infix: `Gourmet` },
+      'None': { prefix: `Open-faced`, suffix: `Pita` },
+    },
+    'Thin Crust': {
+      'Tomato': { infix: `New Yorker` },
+      'Pesto': { infix: `Luigi` },
+      'Alfredo': { infix: `Mafioso` },
+      'None': { prefix: `Huge`, infix: `Cracker` },
+    },
+    'Deep Dish': {
+      'Tomato': { infix: `Mario` },
+      'Pesto': { infix: `Shrek` },
+      'Alfredo': { infix: `Royale` },
+      'None': { prefix: `Bready`, infix: `Slab` },
+    },
+    'None': {
+      'Tomato': { prefix: `Messy` },
+      'Pesto': { prefix: `Mossy` },
+      'Alfredo': { prefix: `Buttered` },
+      'None': { suffix: `Extravaganza` },
+    },
   }
-  const complement = (() => {
-    const chosenToppings = this.chosen.toppings
-    switch(chosenToppings.length) {
-      case 0:
-        if(suffix === `Extravaganza`) {
-          switch(this.size) {
-            case `S`: specialName = `Free Money??`; break
-            case `M`: specialName = `The Void`; break
-            case `L`: specialName = `Black Hole`; break
-            default:
-          }
-        } else {
-          return { prefix: `Vegan` }
-        }
-        break
-      case 1:
-        const singleTopping = chosenToppings[0]
-        switch(singleTopping) {
-          case `Olive`:
-          case `Onion`:
-          case `Pepperoni`:
-          case `Pineapple`:
-          case `Sausage`:
-          case `Spinach`:
-          case `Yak`: return {
-            core: singleTopping,
-            suffix: `with ${singleTopping}`,
-          }
-          case `Mozzarella`: return {
-            prefix: `The`,
-            core: `Cheese`,
-            suffix: `with Cheese`,
-          }
-          case `Razor Blades`: return {
-            prefix: `Dangerous`,
-            core: `Blades`,
-            suffix: `with Blades`,
-          }
-          default: throw new Error(`strange topping: ${singleTopping}`)
-        }
-      default:
+
+  const autoNameCore = autoNameCoreDict[this.crust][this.sauce]
+  const autoNameSupport = (() => {
+    const chosen = this.chosen.toppings
+    const lastChosen = chosen[chosen.length - 1]
+    const nonVeganToppings = [`Mozzarella`, `Pepperoni`, `Sausage`]
+    const veggieToppings = [`Olive`, `Onion`, `Spinach`]
+    const meatToppings = [`Pepperoni`, `Sausage`]
+    let prefix = `The`
+    let infix = `Table`
+    let suffix = ``
+
+    if(lastChosen && lastChosen !== `Mozzarella`) {
+      infix = lastChosen; suffix = `with ${lastChosen}`
     }
+    if(chosen._excludes(`Mozzarella`)) {
+      prefix = `Uncheesed`
+    } else if(this.crust === `None`) { prefix = `Ooey-gooey` }
+    if(chosen._excludes(nonVeganToppings)) { prefix = `Vegan` }
+
+    if(chosen._overlaps(veggieToppings) > 1 && chosen._overlaps(meatToppings)) {
+      prefix = `Super`; infix = `Combo`
+    }
+    if(chosen._overlaps(veggieToppings) > 1) {
+      infix = `Veggie`; suffix = `with Veggies`
+    }
+    if(chosen._contains(meatToppings)) { infix = `Meat`; suffix = `with Meats` }
+    if(chosen.includes(`Pineapple`)) { suffix = `(Island-Style)` }
+    if(chosen.includes(`Razor Blades`)) {
+      prefix = `Lethal`; infix = `Shrapnel`
+      if(chosen.length > 2) { infix = `Garbage Pile` }
+    }
+    return { prefix, infix, suffix }
   })()
+
   if(specialName) {
     this.name = specialName
+  } else {
+    const { prefix, infix, suffix } = { ...autoNameSupport, ...autoNameCore }
+    const autoName = `${prefix} ${infix} ${suffix}`
+    this.name = autoName.trim()
   }
-  const generatedName = (() => {
-    switch(`${!!prefix} ${!!core} ${!!suffix}`) {
-      case `false false true`: return `${complement.core} ${suffix}`
-      case `true false false`: return `${prefix} ${complement.core}`
-      case `false true false`: return `${complement.prefix} ${core}`
-      case `true false true`: return `${prefix} ${complement.core} ${suffix}`
-      default: return false
-    }
-  })()
-  this.name = generatedName
+  console.log(this.chosen)
+  console.log(this.name)
 }
