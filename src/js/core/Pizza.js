@@ -99,7 +99,7 @@ Pizza.prototype.summarize = function () {
       case `Thin Crust`: return `thin-crust pizza with`
       case `Deep Dish`: return `deep-dish pizza with`
       case `None`: return `helping of`
-      default: throw new Error(`strange crust`)
+      default: throw new Error(`strange crust: ${this.crust}`)
     }
   })()
   const listHead = (() => {
@@ -108,7 +108,7 @@ Pizza.prototype.summarize = function () {
       case `Pesto`: return `pesto`
       case `Alfredo`: return `alfredo sauce`
       case `None`: return ``
-      default: throw new Error(`strange sauce`)
+      default: throw new Error(`strange sauce: ${this.sauce}`)
     }
   })()
   let chosenToppings = [...this.chosen.toppings]

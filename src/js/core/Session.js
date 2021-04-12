@@ -89,3 +89,11 @@ Session.prototype.removeView = function (viewId) {
   if(idxOfRemoval === -1) throw new Error(`view for deletion not found`)
   this.state.otherViews.splice(idxOfRemoval, 1)
 }
+
+Session.prototype.getTotalPrice = function () {
+  let total = 0
+  this.order.forEach(item => {
+    total += item.price
+  })
+  return total
+}
