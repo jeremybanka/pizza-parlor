@@ -1,15 +1,15 @@
 import $ from 'jquery'
 import { $makeWelcome, $listenWelcome } from './$welcome'
 import { $makeOrderList, $listenOrderList } from './$orderList'
-import { $makePizzaCustomizer, $listenPizzaCustomizer } from './$pizzaCustomizer'
-
+import { $makePizzaEditor, $listenPizzaEditor } from './$pizzaEditor'
+import { $makeReviewer, $listenReviewer } from './$reviewer'
 import { $makeFarewell, $listenFarewell } from './$farewell'
 
 export {
   $wipe,
   $printWelcome,
   $printOrderList,
-  $printPizzaCustomizer,
+  $printPizzaEditor,
   $printReviewer,
   $printFarewell,
 }
@@ -27,16 +27,16 @@ function $printOrderList(session) {
   $print($orderList)
   $listenOrderList(session)
 }
-function $printPizzaCustomizer(session) {
+function $printPizzaEditor(session) {
   const item = session.order[session.state.view]
-  const $pizzaCustomizer = $makePizzaCustomizer(session, item)
-  $print($pizzaCustomizer)
-  $listenPizzaCustomizer(session, item)
+  const $pizzaEditor = $makePizzaEditor(session, item)
+  $print($pizzaEditor)
+  $listenPizzaEditor(session, item)
 }
 function $printReviewer(session) {
-  const $orderList = $makeOrderList(session)
+  const $orderList = $makeReviewer(session)
   $print($orderList)
-  $listenOrderList(session)
+  $listenReviewer(session)
 }
 function $printFarewell(session) {
   const $farewell = $makeFarewell(session)

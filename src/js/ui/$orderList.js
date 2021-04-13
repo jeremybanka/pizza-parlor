@@ -46,7 +46,7 @@ export function $listenOrderList(session) {
     session.goToNextState()
     $render(session)
   })
-  $(`button.customize`).on(`click`, e => {
+  $(`button.edit`).on(`click`, e => {
     const newViewId = parseInt(e.target.id, 10)
     session.changeView(newViewId)
     $render(session)
@@ -63,10 +63,10 @@ function $makeOrderItem(item) {
     .text(item.summary)
   const $price = $(`<p/>`)
     .text(`$${item.price}`)
-  const $customizeButton = $(`<button/>`)
-    .text(`Customize`)
-    .addClass(`customize`)
+  const $editButton = $(`<button/>`)
+    .text(`Edit`)
+    .addClass(`edit`)
     .attr(`id`, item.id)
-  $orderItem.append([$header, $price, $description, $customizeButton])
+  $orderItem.append([$header, $price, $description, $editButton])
   return $orderItem
 }
