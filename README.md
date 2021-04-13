@@ -53,7 +53,7 @@ Get a description and SPECIAL NAME unique to your very own tasty pizza.
 
 ## Known Bugs
 
-* none identified
+* adding multiple pizzas, then deleting one, then editing the other currently causes a crash.
 
 ## License
 
