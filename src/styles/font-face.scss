@@ -12,6 +12,29 @@ $theia-weights:
     src: url('../fonts/Theia0.2-#{$weight}.woff2') format('woff2');
   }
 }
+$uruz-weights: 
+  ('400')
+  ('500')
+  ('600')
+  ('700');
+@each $weight in $uruz-weights {
+  @font-face {
+    font-family: 'Uruz';
+    font-weight: #{$weight};
+    src: url('../fonts/Ergata-Ymirsson#{$weight}.woff') format('woff');
+  }
+}
+$uruz-c-weights: 
+  ('400')
+  ('500')
+  ('600');
+@each $weight in $uruz-c-weights {
+  @font-face {
+    font-family: 'Uruz C';
+    font-weight: #{$weight};
+    src: url('../fonts/Ergata-Ymirsson#{$weight}C.woff') format('woff');
+  }
+}
 @font-face {
   font-family: 'Manufab';
   src: url('../fonts/ManufabGX.woff') format('woff');
