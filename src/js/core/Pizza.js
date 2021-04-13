@@ -81,7 +81,6 @@ Pizza.prototype.tallyPrice = function () {
   }
   const pizzaPrice = sizePrice + crustPrice + saucePrice + toppingsPrice
   this.price = pizzaPrice
-  console.log(this.price)
 }
 
 Pizza.prototype.summarize = function () {
@@ -112,7 +111,6 @@ Pizza.prototype.summarize = function () {
     }
   })()
   let chosenToppings = [...this.chosen.toppings]
-  console.log(chosenToppings)
   chosenToppings = chosenToppings.map(topping => topping.toLowerCase())
   if (listHead) chosenToppings.unshift(listHead)
   const list = (() => {
@@ -127,7 +125,6 @@ Pizza.prototype.summarize = function () {
     }
   })()
   this.summary = `${adjective} ${noun} ${list}.`
-  console.log(this.summary)
 }
 
 Pizza.prototype.rename = function () {
@@ -200,6 +197,4 @@ Pizza.prototype.rename = function () {
     const autoName = `${prefix} ${infix} ${suffix}`
     this.name = autoName.trim()
   }
-  console.log(this.chosen)
-  console.log(this.name)
 }

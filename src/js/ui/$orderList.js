@@ -54,7 +54,6 @@ export function $listenOrderList(session) {
 }
 
 function $makeOrderItem(item) {
-  console.log(item.name)
   const nameOfItem = item.name
   const $orderItem = $(`<section/>`)
   const $header = $(`<h4/>`)

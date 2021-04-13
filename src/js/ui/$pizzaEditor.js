@@ -62,7 +62,7 @@ export function $listenPizzaEditor(session, item) {
     $render(session)
   })
   $(`[type='radio'].main`).on(`click`, e => {
-    console.log(e.target)
+    _comprises(e.target)
     const key = e.target.name
     const idx = parseInt(e.target.value, 10)
     item.chooseOption(key, idx)
@@ -187,7 +187,7 @@ function $makeRadioButton({ option, idx, radioGroupId, checked, role }) {
 }
 
 function $makeRadioElement({ radioGroupId, idx, checked, role }) {
-  console.log(radioGroupId, idx, checked)
+  _comprises(radioGroupId, idx, checked)
   const $radioElement = $(`<input type='radio'/>`)
     .attr(`name`, radioGroupId)
     .attr(`value`, idx)
