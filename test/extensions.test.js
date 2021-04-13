@@ -72,7 +72,7 @@ describe(`Array.prototype._overlaps()`, () => {
 })
 
 describe(`Array.prototype._excludes()`, () => {
-  it(`returns true if the specified items are not in the array`, () => {
+  it(`returns true if each of the specified items are not in the array`, () => {
     const output = importantThings._excludes(
       `torment`, `anguish`,
     )

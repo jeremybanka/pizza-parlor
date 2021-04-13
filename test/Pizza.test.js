@@ -6,36 +6,38 @@ import { _contains, _comprises, _overlaps, _excludes } from '../src/js/core/exte
 
 extend(Array).with(_contains, _comprises, _overlaps, _excludes)
 
-test(`Create an 'empty' medium Pizza with a placeholder id and no toppings.`, () => {
-  const input = new Pizza()
-  const expected = {
-    id: -1,
-    name: `The Classic`,
-    summary: `Medium pizza with tomato sauce and mozzarella.`,
-    price: 20,
-    chosen: {
-      size: 1,
-      crust: 0,
-      sauce: 0,
-      toppings: [`Mozzarella`],
-    },
-    options: {
-      size: [`S`, `M`, `L`],
-      crust: [`Regular`, `Thin Crust`, `Deep Dish`, `None`],
-      sauce: [`Tomato`, `Pesto`, `Alfredo`, `None`],
-      toppings: [
-        `Olive`,
-        `Onion`,
-        `Pepperoni`,
-        `Pineapple`,
-        `Razor Blades`,
-        `Sausage`,
-        `Spinach`,
-        `Yak`,
-      ],
-    },
-  }
-  expect(input).toEqual(expected)
+describe(`new Pizza()`, () => {
+  it(`Creates an 'empty' medium Pizza with a placeholder id and no toppings.`, () => {
+    const input = new Pizza()
+    const expected = {
+      id: -1,
+      name: `The Classic`,
+      summary: `Medium pizza with tomato sauce and mozzarella.`,
+      price: 20,
+      chosen: {
+        size: 1,
+        crust: 0,
+        sauce: 0,
+        toppings: [`Mozzarella`],
+      },
+      options: {
+        size: [`S`, `M`, `L`],
+        crust: [`Regular`, `Thin Crust`, `Deep Dish`, `None`],
+        sauce: [`Tomato`, `Pesto`, `Alfredo`, `None`],
+        toppings: [
+          `Olive`,
+          `Onion`,
+          `Pepperoni`,
+          `Pineapple`,
+          `Razor Blades`,
+          `Sausage`,
+          `Spinach`,
+          `Yak`,
+        ],
+      },
+    }
+    expect(input).toEqual(expected)
+  })
 })
 
 describe(`Pizza.prototype.chooseOption()`, () => {
