@@ -40,7 +40,13 @@ Session.prototype.goToNextState = function () {
     this.nextStates.push(this.state)
     this.state = this.nextStates.shift()
   }
-  return jobDone
+}
+
+Session.prototype.goToPrevState = function () {
+  if (this.state.id !== `welcome`) {
+    this.nextStates.unshift(this.state)
+    this.state = this.nextStates.pop()
+  }
 }
 
 Session.prototype.addToOrder = function (pizza) {

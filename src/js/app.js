@@ -54,6 +54,7 @@ $(() => {
 
 export default function $render(session) {
   $wipe()
+  if (!session) session = new Session()
   switch (session.state.id) {
     case WELCOME:
       $printWelcome(session)
