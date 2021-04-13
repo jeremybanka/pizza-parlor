@@ -1,0 +1,73 @@
+:root {
+  --fg-color: #444;
+  --bg-color: #eee;
+}
+body {
+  font-size: 20px;
+  background: var(--bg-color);
+  color: var(--fg-color);
+  font-family: Uruz;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  &#order-list {
+    #overview {
+      h2 {
+
+      }
+    }
+    #content {
+      section {
+        ~ section {
+
+        }
+      }
+    }
+  }
+}
+
+footer {
+  position: fixed;
+  width: calc(100vw - 20px);
+  height: 150px;
+  bottom: 0;
+}
+
+button {
+  font-family: Uruz;
+  &.icon { 
+    font-family: Icon;
+    font-variation-settings: 'wght' 200;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+label.radio {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  span {
+    padding: 3px;
+  }
+  .border {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;  
+  }
+  input[type='radio' i] {
+    display: none;
+    &:checked {
+      background: var(--fg-color);
+      ~ span {
+        background-color: var(--fg-color);        
+        color: var(--bg-color);        
+      }
+    }
+  }
+
+}

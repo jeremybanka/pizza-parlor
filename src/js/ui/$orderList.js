@@ -51,6 +51,11 @@ export function $listenOrderList(session) {
     session.changeView(newViewId)
     $render(session)
   })
+  $(`button.delete`).on(`click`, e => {
+    const idxOfRemoval = parseInt(e.target.id, 10)
+    session.removeFromOrder(idxOfRemoval)
+    $render(session)
+  })
 }
 
 function $makeOrderItem(item) {
@@ -66,6 +71,10 @@ function $makeOrderItem(item) {
     .text(`Edit`)
     .addClass(`edit`)
     .attr(`id`, item.id)
-  $orderItem.append([$header, $price, $description, $editButton])
+  const $deleteButton = $(`<button/>`)
+    .text(`Delete`)
+    .addClass(`delete`)
+    .attr(`id`, item.id)
+  $orderItem.append([$header, $price, $description, $editButton, $deleteButton])
   return $orderItem
 }

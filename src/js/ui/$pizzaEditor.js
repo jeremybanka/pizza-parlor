@@ -20,7 +20,7 @@ export function $makePizzaEditor(session, item) {
     .text(item.name)
     .addClass(`center`)
   const $price = $(`<p/>`)
-    .text(`$${session.getTotalPrice()}`)
+    .text(`$${item.price}`)
   const $description = $(`<p/>`)
     .text(item.summary)
   $overview.append([$heading, $imgWrapper, $subheading, $description, $price])
@@ -62,7 +62,6 @@ export function $listenPizzaEditor(session, item) {
     $render(session)
   })
   $(`[type='radio'].main`).on(`click`, e => {
-    _comprises(e.target)
     const key = e.target.name
     const idx = parseInt(e.target.value, 10)
     item.chooseOption(key, idx)
@@ -107,19 +106,19 @@ function $makeToppingsControls(session, item) {
   const $chosenToppings = item.chosen.toppings.map((topping, idx) => {
     const $chosenTopping = $(`<span/>`)
       .addClass(`control-cluster`)
-    const $label = $(`<span/>`)
+    const $name = $(`<span/>`)
       .text(topping)
     const $deleteToppingButton = $(`<button/>`)
       .text(`x`)
       .attr(`value`, idx)
       .addClass(`delete-topping`)
-    return $chosenTopping.append($label, $deleteToppingButton)
+    return $chosenTopping.append($name, $deleteToppingButton)
   })
   const $unchosenToppings = session.state.toppingOptionsIsOpen
     ? (() => {
       const $optionsStrip = $makeStrip(`Toppings`)
       const $cancelButton = $(`<button/>`)
-        .text(`x`)
+        .text(`x`).addClass(`icon`)
         .attr(`id`, `cancel-new-topping`)
       const $horizontalScroller = $(`<div/>`)
         .addClass(`horizontal-scroller`)
@@ -130,7 +129,7 @@ function $makeToppingsControls(session, item) {
         role: `select-new`,
       })
       const $confirmButton = $(`<button/>`)
-        .text(`c`)
+        .text(`c`).addClass(`icon`)
         .attr(`id`, `confirm-new-topping`)
       $horizontalScroller.append($radioButtons)
       $optionsStrip.append($cancelButton, $horizontalScroller, $confirmButton)
@@ -179,6 +178,7 @@ function $makeRadioButtons({ radioGroupId, options, chosenIdx, role }) {
 
 function $makeRadioButton({ option, idx, radioGroupId, checked, role }) {
   const $radioButton = $(`<label/>`)
+    .addClass(`radio`)
   const $border = $(`<div class='border'/>`)
   const $textSpan = $(`<span/>`).text(option)
   const $radioElement = $makeRadioElement({ radioGroupId, idx, checked, role })
@@ -187,7 +187,6 @@ function $makeRadioButton({ option, idx, radioGroupId, checked, role }) {
 }
 
 function $makeRadioElement({ radioGroupId, idx, checked, role }) {
-  _comprises(radioGroupId, idx, checked)
   const $radioElement = $(`<input type='radio'/>`)
     .attr(`name`, radioGroupId)
     .attr(`value`, idx)

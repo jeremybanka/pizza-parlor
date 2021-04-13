@@ -48,7 +48,6 @@ export function $listenReviewer(session) {
 }
 
 function $makeOrderItem(item) {
-  _comprises(item.name)
   const nameOfItem = item.name
   const $orderItem = $(`<section/>`)
   const $header = $(`<h4/>`)
