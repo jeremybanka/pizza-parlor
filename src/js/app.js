@@ -30,14 +30,13 @@ extend(Array).with(_contains, _comprises, _overlaps, _excludes)
 const session = new Session()
 
 $(() => {
-  session.goToNextState()
+  // session.goToNextState()
   // console.log(session)
-  session.goToNextState()
+  // session.goToNextState()
   // console.log(session.state.id)
-  session.addPizza()
+  // session.addPizza()
   // console.log(session.order[session.order.length - 1])
-  session.changeView(0)
-  session.goToNextState()
+  // session.changeView(0)
   $render(session)
 
   // session.state.view
