@@ -36,7 +36,7 @@ export default function Session() {
 
 Session.prototype.goToNextState = function () {
   const jobDone = !this.state.isUnfinished
-  if(jobDone) {
+  if (jobDone) {
     this.nextStates.push(this.state)
     this.state = this.nextStates.shift()
   }
@@ -45,9 +45,9 @@ Session.prototype.goToNextState = function () {
 
 Session.prototype.addToOrder = function (pizza) {
   const inWrongState = this.state.id !== ORDER_IN_PROGRESS
-  if(inWrongState) throw new Error(`It's not time to add to your order.`)
+  if (inWrongState) throw new Error(`It's not time to add to your order.`)
   const thatsNoPizza = pizza?.constructor?.name !== `Pizza`
-  if(thatsNoPizza) throw new Error(`Sir, this is a pizza restaurant.`)
+  if (thatsNoPizza) throw new Error(`Sir, this is a pizza restaurant.`)
   this.idTicker += 1
   pizza.id = this.idTicker
   this.order.push(pizza)
@@ -62,21 +62,21 @@ Session.prototype.addPizza = function () {
 
 Session.prototype.removeFromOrder = function (itemId) {
   const inWrongState = this.state.id !== ORDER_IN_PROGRESS
-  if(inWrongState) throw new Error(`It's not time to edit your order.`)
+  if (inWrongState) throw new Error(`It's not time to edit your order.`)
   const idxOfRemoval = this.order.findIndex(item => item.id === itemId)
-  if(idxOfRemoval === -1) throw new Error(`Couldn't find the item for deletion.`)
+  if (idxOfRemoval === -1) throw new Error(`Can't find the item for deletion.`)
   this.order.splice(idxOfRemoval, 1)
   this.changeView(LIST)
   this.removeView(itemId)
   const orderNowEmpty = this.order.length === 0
-  if(orderNowEmpty) this.state.isUnfinished = true
+  if (orderNowEmpty) this.state.isUnfinished = true
 }
 
 Session.prototype.changeView = function (viewId) {
   const isCurrentView = this.state.view === viewId
-  if(isCurrentView) return
+  if (isCurrentView) return
   const didntFindOtherView = !this.state.otherViews?.includes(viewId)
-  if(didntFindOtherView) throw new Error(`desired view does not exist`)
+  if (didntFindOtherView) throw new Error(`desired view does not exist`)
   this.state.otherViews.unshift(this.state.view)
   const idxOfNewView = this.state.otherViews.indexOf(viewId)
   this.state.otherViews.splice(idxOfNewView, 1)
@@ -84,9 +84,9 @@ Session.prototype.changeView = function (viewId) {
 }
 
 Session.prototype.removeView = function (viewId) {
-  if(!this.state.otherViews) throw new Error(`desired view does not exist`)
+  if (!this.state.otherViews) throw new Error(`desired view does not exist`)
   const idxOfRemoval = this.state.otherViews.indexOf(viewId)
-  if(idxOfRemoval === -1) throw new Error(`view for deletion not found`)
+  if (idxOfRemoval === -1) throw new Error(`view for deletion not found`)
   this.state.otherViews.splice(idxOfRemoval, 1)
 }
 

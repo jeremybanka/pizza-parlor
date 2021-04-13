@@ -9,7 +9,7 @@ function Extension(Prototype) {
 }
 
 Extension.prototype.with = function (...methods) {
-  for(const method of methods) {
+  for (const method of methods) {
     this.scope.prototype[method.name] = method
   }
 }

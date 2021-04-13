@@ -35,7 +35,7 @@ export default function Pizza() {
 }
 
 Pizza.prototype.chooseOption = function (key, idx) {
-  switch(key) {
+  switch (key) {
     case `size`:
     case `crust`:
     case `sauce`:
@@ -75,7 +75,7 @@ Pizza.prototype.tallyPrice = function () {
   const crustPrice = PRICE_SHEET.crust[this.crust]
   const saucePrice = PRICE_SHEET.sauce[this.sauce]
   let toppingsPrice = 0
-  for(let i = 0; i < this.chosen.toppings.length; i++) {
+  for (let i = 0; i < this.chosen.toppings.length; i++) {
     const chosenTopping = this.chosen.toppings[i]
     toppingsPrice += PRICE_SHEET.toppings[chosenTopping]
   }
@@ -86,7 +86,7 @@ Pizza.prototype.tallyPrice = function () {
 
 Pizza.prototype.summarize = function () {
   const adjective = (() => {
-    switch(this.size) {
+    switch (this.size) {
       case `S`: return `Small`
       case `M`: return `Medium`
       case `L`: return `Large`
@@ -94,7 +94,7 @@ Pizza.prototype.summarize = function () {
     }
   })()
   const noun = (() => {
-    switch(this.crust) {
+    switch (this.crust) {
       case `Regular`: return `pizza with`
       case `Thin Crust`: return `thin-crust pizza with`
       case `Deep Dish`: return `deep-dish pizza with`
@@ -103,7 +103,7 @@ Pizza.prototype.summarize = function () {
     }
   })()
   const listHead = (() => {
-    switch(this.sauce) {
+    switch (this.sauce) {
       case `Tomato`: return `tomato sauce`
       case `Pesto`: return `pesto`
       case `Alfredo`: return `alfredo sauce`
@@ -114,9 +114,9 @@ Pizza.prototype.summarize = function () {
   let chosenToppings = [...this.chosen.toppings]
   console.log(chosenToppings)
   chosenToppings = chosenToppings.map(topping => topping.toLowerCase())
-  if(listHead) chosenToppings.unshift(listHead)
+  if (listHead) chosenToppings.unshift(listHead)
   const list = (() => {
-    switch(chosenToppings.length) {
+    switch (chosenToppings.length) {
       case 0: return `nothing`
       case 1: return chosenToppings[0]
       case 2: return `${chosenToppings[0]} and ${chosenToppings[1]}`
@@ -170,30 +170,30 @@ Pizza.prototype.rename = function () {
     let infix = `Table`
     let suffix = ``
 
-    if(lastChosen && lastChosen !== `Mozzarella`) {
+    if (lastChosen && lastChosen !== `Mozzarella`) {
       infix = lastChosen; suffix = `with ${lastChosen}`
     }
-    if(chosen._excludes(`Mozzarella`)) {
+    if (chosen._excludes(`Mozzarella`)) {
       prefix = `Uncheesed`
-    } else if(this.crust === `None`) { prefix = `Ooey-gooey` }
-    if(chosen._excludes(nonVeganToppings)) { prefix = `Vegan` }
+    } else if (this.crust === `None`) { prefix = `Ooey-gooey` }
+    if (chosen._excludes(nonVeganToppings)) { prefix = `Vegan` }
 
-    if(chosen._overlaps(veggieToppings) > 1 && chosen._overlaps(meatToppings)) {
+    if (chosen._overlaps(veggieToppings) > 1 && chosen._overlaps(meatToppings)) {
       prefix = `Super`; infix = `Combo`
     }
-    if(chosen._overlaps(veggieToppings) > 1) {
+    if (chosen._overlaps(veggieToppings) > 1) {
       infix = `Veggie`; suffix = `with Veggies`
     }
-    if(chosen._contains(meatToppings)) { infix = `Meat`; suffix = `with Meats` }
-    if(chosen.includes(`Pineapple`)) { suffix = `(Island-Style)` }
-    if(chosen.includes(`Razor Blades`)) {
+    if (chosen._contains(meatToppings)) { infix = `Meat`; suffix = `with Meats` }
+    if (chosen.includes(`Pineapple`)) { suffix = `(Island-Style)` }
+    if (chosen.includes(`Razor Blades`)) {
       prefix = `Lethal`; infix = `Shrapnel`
-      if(chosen.length > 2) { infix = `Garbage Pile` }
+      if (chosen.length > 2) { infix = `Garbage Pile` }
     }
     return { prefix, infix, suffix }
   })()
 
-  if(specialName) {
+  if (specialName) {
     this.name = specialName
   } else {
     const { prefix, infix, suffix } = { ...autoNameSupport, ...autoNameCore }
