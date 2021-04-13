@@ -1,12 +1,12 @@
 import extend from '../src/js/core/extensions'
 import {
   _contains,
-  _matches,
+  _comprises,
   _overlaps,
   _excludes,
 } from '../src/js/core/extensions/array'
 
-extend(Array).with(_contains, _matches, _overlaps, _excludes)
+extend(Array).with(_contains, _comprises, _overlaps, _excludes)
 
 const numbers = [0, 1, 2, 3, 4, 5]
 const importantThings = [`sleep`, `exercise`, `nutrition`, `love`]
@@ -21,9 +21,9 @@ describe(`extend(Prototype)`, () => {
 
 describe(`Extension.prototype.with(...methods)`, () => {
   it(`adds methods to Array, the targeted Prototype`, () => {
-    extend(Array).with(_contains, _matches, _overlaps)
+    extend(Array).with(_contains, _comprises, _overlaps)
     expect(typeof Array.prototype._contains).toBe(`function`)
-    expect(typeof Array.prototype._matches).toBe(`function`)
+    expect(typeof Array.prototype._comprises).toBe(`function`)
     expect(typeof Array.prototype._overlaps).toBe(`function`)
   })
 })
@@ -47,15 +47,15 @@ describe(`Array.prototype._contains()`, () => {
   })
 })
 
-describe(`Array.prototype._matches()`, () => {
+describe(`Array.prototype._comprises()`, () => {
   it(`returns true if array and input set contain the same elements`, () => {
-    const output = importantThings._matches(
+    const output = importantThings._comprises(
       `sleep`, `exercise`, `nutrition`, `love`
     )
     expect(output).toBe(true)
   })
   it(`returns false if array contains elements not in the input set`, () => {
-    const output = numbers._matches(
+    const output = numbers._comprises(
       `sleep`, `exercise`, `nutrition`, `love`, `gamer fuel`
     )
     expect(output).toBe(false)

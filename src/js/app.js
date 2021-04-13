@@ -7,7 +7,7 @@ import {
   $wipe,
   $printWelcome,
   $printOrderList,
-  $printPizzaCustomizer,
+  $printPizzaEditor,
   $printReviewer,
   $printFarewell,
 } from './ui/$macros'
@@ -20,12 +20,12 @@ import { WELCOME,
 import extend from './core/extensions'
 import {
   _contains,
-  _matches,
+  _comprises,
   _overlaps,
   _excludes,
 } from './core/extensions/array'
 
-extend(Array).with(_contains, _matches, _overlaps, _excludes)
+extend(Array).with(_contains, _comprises, _overlaps, _excludes)
 
 const session = new Session()
 
@@ -37,6 +37,7 @@ $(() => {
   session.addPizza()
   console.log(session.order[session.order.length - 1])
   session.changeView(0)
+  session.goToNextState()
   $render(session)
 
   // session.state.view
@@ -53,17 +54,17 @@ $(() => {
 
 export default function $render(session) {
   $wipe()
-  switch(session.state.id) {
+  switch (session.state.id) {
     case WELCOME:
       $printWelcome(session)
       break
     case ORDER_IN_PROGRESS:
-      switch(typeof session.state.view) {
+      switch (typeof session.state.view) {
         case `string`:
           $printOrderList(session)
           break
         case `number`:
-          $printPizzaCustomizer(session)
+          $printPizzaEditor(session)
           break
         default:
       }

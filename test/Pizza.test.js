@@ -2,9 +2,9 @@
 
 import { Pizza } from '../src/js/core'
 import extend from '../src/js/core/extensions'
-import { _contains, _matches, _overlaps, _excludes } from '../src/js/core/extensions/array'
+import { _contains, _comprises, _overlaps, _excludes } from '../src/js/core/extensions/array'
 
-extend(Array).with(_contains, _matches, _overlaps, _excludes)
+extend(Array).with(_contains, _comprises, _overlaps, _excludes)
 
 test(`Create an 'empty' medium Pizza with a placeholder id and no toppings.`, () => {
   const input = new Pizza()

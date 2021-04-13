@@ -10,7 +10,7 @@ const _contains = function (...args) {
   return true
 }
 
-const _matches = function (...args) {
+const _comprises = function (...args) {
   const maybeArray = args[0]
   const queryElements = Array.isArray(maybeArray) ? maybeArray : args
   for(const queryElement of queryElements) {
@@ -42,4 +42,4 @@ const _excludes = function (...args) {
   return !incidences
 }
 
-export { _contains, _matches, _overlaps, _excludes }
+export { _contains, _comprises, _overlaps, _excludes }
