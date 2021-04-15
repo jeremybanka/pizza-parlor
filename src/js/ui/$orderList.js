@@ -37,27 +37,6 @@ export function $makeOrderList(session) {
   return [$main, $footer]
 }
 
-export function $listenOrderList(session) {
-  $(`#add-pizza`).on(`click`, () => {
-    session.addPizza()
-    $render(session)
-  })
-  $(`#next`).on(`click`, () => {
-    session.goToNextState()
-    $render(session)
-  })
-  $(`button.edit`).on(`click`, e => {
-    const newViewId = parseInt(e.target.id, 10)
-    session.changeView(newViewId)
-    $render(session)
-  })
-  $(`button.delete`).on(`click`, e => {
-    const idxOfRemoval = parseInt(e.target.id, 10)
-    session.removeFromOrder(idxOfRemoval)
-    $render(session)
-  })
-}
-
 function $makeOrderItem(item) {
   const nameOfItem = item.name
   const $orderItem = $(`<section/>`)
@@ -70,11 +49,32 @@ function $makeOrderItem(item) {
   const $editButton = $(`<button/>`)
     .text(`Edit`)
     .addClass(`edit`)
-    .attr(`id`, item.id)
+    .attr(`value`, item.id)
   const $deleteButton = $(`<button/>`)
     .text(`Delete`)
     .addClass(`delete`)
-    .attr(`id`, item.id)
+    .attr(`value`, item.id)
   $orderItem.append([$header, $price, $description, $editButton, $deleteButton])
   return $orderItem
+}
+
+export function $listenOrderList(session) {
+  $(`#next`).on(`click`, () => {
+    session.goToNextState()
+    $render(session)
+  })
+  $(`#add-pizza`).on(`click`, () => {
+    session.addPizza()
+    $render(session)
+  })
+  $(`button.edit`).on(`click`, e => {
+    const newViewId = parseInt(e.target.value, 10)
+    session.changeView(newViewId)
+    $render(session)
+  })
+  $(`button.delete`).on(`click`, e => {
+    const itemId = parseInt(e.target.value, 10)
+    session.removeFromOrder(itemId)
+    $render(session)
+  })
 }

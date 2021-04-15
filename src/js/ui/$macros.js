@@ -14,8 +14,12 @@ export {
   $printFarewell,
 }
 
-function $wipe() { $(`body`).empty() }
-function $print($content) { $(`body`).append($content) }
+function $wipe() {
+  $(`body`).empty()
+}
+function $print($content) {
+  $(`body`).append($content)
+}
 
 function $printWelcome(session) {
   const $welcome = $makeWelcome()
@@ -28,7 +32,7 @@ function $printOrderList(session) {
   $listenOrderList(session)
 }
 function $printPizzaEditor(session) {
-  const item = session.order[session.state.view]
+  const item = session.order.find(item => item.id === session.state.view)
   const $pizzaEditor = $makePizzaEditor(session, item)
   $print($pizzaEditor)
   $listenPizzaEditor(session, item)
