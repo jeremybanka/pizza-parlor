@@ -26,7 +26,7 @@
     "webpack-merge": "^5.7.3"
   },
   "scripts": {
-    "start": "webpack --watch",
+    "start": "npm run build; webpack serve --open --mode development",
     "build": "webpack",
     "jest": "jest --watchAll",
     "test": "jest --coverage",
