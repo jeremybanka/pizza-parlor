@@ -39,8 +39,6 @@ $(() => {
   // session.addPizza()
   // console.log(session.order[session.order.length - 1])
   // session.changeView(0)
-  $render(session)
-
   // session.state.view
   // session.state.otherViews
   // session.changeView(`list`)
@@ -51,6 +49,7 @@ $(() => {
   // session.order[0].chooseOption(`crust`, 3)
   // session.order[0].chooseOption(`sauce`, 3)
   // session.order[0].chooseOption(`toppings`, 4)
+  $render(session)
 })
 
 export default function $render(session) {
