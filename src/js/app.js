@@ -13,10 +13,12 @@ import {
 } from './ui/$macros'
 // CORE
 import { Session } from './core'
-import { WELCOME,
+import {
+  WELCOME,
   ORDER_IN_PROGRESS,
   ORDER_UNDER_REVIEW,
-  ORDER_COMPLETE } from './core/Session'
+  ORDER_COMPLETE,
+} from './core/Session'
 import extend from './core/extensions'
 import {
   _contains,

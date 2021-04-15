@@ -50,13 +50,20 @@ describe(`Array.prototype._contains()`, () => {
 describe(`Array.prototype._comprises()`, () => {
   it(`returns true if array and input set contain the same elements`, () => {
     const output = importantThings._comprises(
-      `sleep`, `exercise`, `nutrition`, `love`
+      `sleep`,
+      `exercise`,
+      `nutrition`,
+      `love`
     )
     expect(output).toBe(true)
   })
   it(`returns false if array contains elements not in the input set`, () => {
     const output = numbers._comprises(
-      `sleep`, `exercise`, `nutrition`, `love`, `gamer fuel`
+      `sleep`,
+      `exercise`,
+      `nutrition`,
+      `love`,
+      `gamer fuel`
     )
     expect(output).toBe(false)
   })
@@ -64,18 +71,14 @@ describe(`Array.prototype._comprises()`, () => {
 
 describe(`Array.prototype._overlaps()`, () => {
   it(`returns number of matched elements between arrays`, () => {
-    const output = importantThings._overlaps(
-      `exercise`, `anguish`,
-    )
+    const output = importantThings._overlaps(`exercise`, `anguish`)
     expect(output).toBe(1)
   })
 })
 
 describe(`Array.prototype._excludes()`, () => {
   it(`returns true if each of the specified items are not in the array`, () => {
-    const output = importantThings._excludes(
-      `torment`, `anguish`,
-    )
+    const output = importantThings._excludes(`torment`, `anguish`)
     expect(output).toBe(true)
   })
 })

@@ -15,13 +15,11 @@ main {
   &#order-list {
     #overview {
       h2 {
-
       }
     }
     #content {
       section {
         ~ section {
-
         }
       }
     }
@@ -37,9 +35,9 @@ footer {
 
 button {
   font-family: Uruz;
-  &.icon { 
+  &.icon {
     font-family: Icon;
-    font-variation-settings: 'wght' 200;
+    font-variation-settings: "wght" 200;
     width: 30px;
     height: 30px;
   }
@@ -57,17 +55,16 @@ label.radio {
     top: 0;
     right: 0;
     bottom: 0;
-    left: 0;  
+    left: 0;
   }
-  input[type='radio' i] {
+  input[type="radio" i] {
     display: none;
     &:checked {
       background: var(--fg-color);
       ~ span {
-        background-color: var(--fg-color);        
-        color: var(--bg-color);        
+        background-color: var(--fg-color);
+        color: var(--bg-color);
       }
     }
   }
-
 }
